@@ -24,7 +24,7 @@ echo `date` >> /data/2nd-init/log
     cp -p /system/xbin/busybox /sbin
     cp -p /system/xbin/2nd-init /sbin
     cp -p /system/xbin/taskset /sbin
-    cp -p /system/xbin/log_init.sh /
+    ln -s /system/xbin/log_init.sh /log_init.sh
     cp -p /system/xbin/hijack.killall /sbin
     #cat /system/etc/rootfs/init.rc /init.rc
     rm /init.rc
