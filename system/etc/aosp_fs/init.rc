@@ -11,10 +11,10 @@ loglevel 3
 # setup the global environment
     export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
-    export ANDROID_BOOTLOGO 0
+    export ANDROID_BOOTLOGO 1
     export ANDROID_ROOT /system
     export ANDROID_ASSETS /system/app
-    export ANDROID_DATA /data2
+    export ANDROID_DATA /data
     export EXTERNAL_STORAGE /mnt/sdcard
     export EXTERNAL_ALT_STORAGE /mnt/sdcard-ext      # Feature 34534
     export ASEC_MOUNTPOINT /mnt/asec
@@ -319,7 +319,6 @@ on boot
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
 
 #    class_start default
-
 
 #    can we get some logcat love
     exec /log_init.sh
@@ -875,7 +874,7 @@ on property:mot.backup_restore.action="run_restore"
     stop zygote
     start mot_restore
 
-on property:sys.chargeonly.mode=""
+on property:sys.chargeonly.mode=1
     class_start pre-zygote_services
     exec /system/bin/charge_only_mode
 
