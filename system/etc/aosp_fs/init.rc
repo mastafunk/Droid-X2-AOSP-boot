@@ -9,25 +9,25 @@ sysclktz 0
 loglevel 3
 
 # setup the global environment
-    export PATH /sbin:/vendor/bin:/system2/sbin:/system2/bin:/system2/xbin
-    export LD_LIBRARY_PATH /vendor/lib:/system2/lib
+    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
+    export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 0
-    export ANDROID_ROOT /system2
-    export ANDROID_ASSETS /system2/app
+    export ANDROID_ROOT /system
+    export ANDROID_ASSETS /system/app
     export ANDROID_DATA /data2
     export EXTERNAL_STORAGE /mnt/sdcard
     export EXTERNAL_ALT_STORAGE /mnt/sdcard-ext      # Feature 34534
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
-    export BOOTCLASSPATH /system2/framework/core.jar:/system2/framework/bouncycastle.jar:/system2/framework/ext.jar:/system2/framework/framework.jar:/system2/framework/android.policy.jar:/system2/framework/services.jar:/system2/framework/core-junit.jar:/system2/framework/com.motorola.android.frameworks.jar:/system2/framework/com.motorola.android.widget.jar
+    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/core-junit.jar:/system/framework/com.motorola.android.frameworks.jar:/system/framework/com.motorola.android.widget.jar
 
 # Backward compatibility
-    symlink /system2/etc /etc
+    symlink /system/etc /etc
     symlink /sys/kernel/debug /d
 
 # Right now vendor lives on the same filesystem as system,
 # but someday that may change.
-    symlink /system2/vendor /vendor
+    symlink /system/vendor /vendor
 
 # create mountpoints
     mkdir /mnt 0775 root system
@@ -330,7 +330,7 @@ service ueventd /sbin/ueventd
     class pre-zygote_services
     critical
 
-service console /system2/bin/sh
+service console /system/bin/sh
     class pre-zygote_services
     console
     disabled
@@ -355,43 +355,43 @@ on property:persist.service.adb.enable_NV_DISABLED=1
 on property:persist.service.adb.enable=0
     stop adbd
 
-service servicemanager /system2/bin/servicemanager
+service servicemanager /system/bin/servicemanager
     class pre-zygote_services
     user system
     critical
     onrestart restart zygote
     onrestart restart media
 
-service vold /system2/bin/vold
+service vold /system/bin/vold
     class pre-zygote_services
     socket vold stream 0660 root mount
     ioprio be 2
 
-service tund /system2/bin/tund
+service tund /system/bin/tund
     class pre-zygote_services
     socket tund stream 0660 vpn system
     ioprio be 2
 
-service netd /system2/bin/netd
+service netd /system/bin/netd
     class pre-zygote_services
     socket netd stream 0660 root system
 
-service nexus /system2/bin/nexus
+service nexus /system/bin/nexus
     class pre-zygote_services
     socket nexus stream 0660 root system
     disabled
 
-service debuggerd /system2/bin/debuggerd
+service debuggerd /system/bin/debuggerd
     class pre-zygote_services
 
-service ril-daemon /system2/bin/rild
+service ril-daemon /system/bin/rild
     class pre-zygote_services
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
     group radio cache inet misc audio sdcard_rw system mot_secclkd mot_accy
 
-service zygote /system2/bin/app_process -Xzygote /system2/bin --zygote --start-system-server
+service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class zygote_services
     socket zygote stream 666
     onrestart write /sys/android_power/request_state wake
@@ -399,26 +399,26 @@ service zygote /system2/bin/app_process -Xzygote /system2/bin --zygote --start-s
     onrestart restart media
     onrestart restart netd
 
-service media /system2/bin/mediaserver
+service media /system/bin/mediaserver
     class zygote_services
     user media
     group system audio camera graphics inet net_bt net_bt_admin net_raw mot_drm input mot_tpapi mot_secclkd mot_pwric
     ioprio rt 4
 
-service bootanim /system2/bin/bootanimation
+service bootanim /system/bin/bootanimation
     class post-zygote_services
     user graphics
     group graphics
     disabled
     oneshot
 
-service dbus /system2/bin/dbus-daemon --system --nofork
+service dbus /system/bin/dbus-daemon --system --nofork
     class post-zygote_services
     socket dbus stream 660 bluetooth bluetooth
     user bluetooth
     group bluetooth net_bt_admin
 
-service bluetoothd /system2/bin/bluetoothd -n
+service bluetoothd /system/bin/bluetoothd -n
     class post-zygote_services
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
@@ -427,48 +427,48 @@ service bluetoothd /system2/bin/bluetoothd -n
     group bluetooth net_bt_admin misc
     disabled
 
-service hfag /system2/bin/sdptool add --channel=10 HFAG
+service hfag /system/bin/sdptool add --channel=10 HFAG
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service hsag /system2/bin/sdptool add --channel=11 HSAG
+service hsag /system/bin/sdptool add --channel=11 HSAG
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service opush /system2/bin/sdptool add --channel=12 OPUSH
+service opush /system/bin/sdptool add --channel=12 OPUSH
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service pbap /system2/bin/sdptool add --channel=19 PBAP
+service pbap /system/bin/sdptool add --channel=19 PBAP
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service installd /system2/bin/installd
+service installd /system/bin/installd
     class post-zygote_services
     socket installd stream 600 system system
 
-service flash_recovery /system2/etc/install-recovery.sh
+service flash_recovery /system/etc/install-recovery.sh
     class post-zygote_services
     oneshot
 
 # Copy 12M/batch files
-service 12m_files_copy /system2/etc/12m_files_copy.sh
+service 12m_files_copy /system/etc/12m_files_copy.sh
      class pre-zygote_services
      oneshot
 
-service racoon /system2/bin/racoon
+service racoon /system/bin/racoon
     class post-zygote_services
     socket racoon stream 600 system system
     # racoon will setuid to vpn after getting necessary resources.
@@ -476,7 +476,7 @@ service racoon /system2/bin/racoon
     disabled
     oneshot
 
-service mtpd /system2/bin/mtpd
+service mtpd /system/bin/mtpd
     class post-zygote_services
     socket mtpd stream 600 system system
     user vpn
@@ -484,46 +484,46 @@ service mtpd /system2/bin/mtpd
     disabled
     oneshot
 
-service keystore /system2/bin/keystore /data/misc/keystore
+service keystore /system/bin/keystore /data/misc/keystore
     class post-zygote_services
     user keystore
     group keystore
     socket keystore stream 666
 
-service dumpstate /system2/bin/dumpstate -s
+service dumpstate /system/bin/dumpstate -s
     class post-zygote_services
     socket dumpstate stream 0660 shell log
     disabled
     oneshot
 
-service ap_fmloader /system2/bin/logwrapper /system2/bin/wlan_loader -f /system2/etc/wifi/fw_tiwlan_ap.bin -i /system2/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
+service ap_fmloader /system/bin/logwrapper /system/bin/wlan_loader -f /system/etc/wifi/fw_tiwlan_ap.bin -i /system/etc/wifi/tiwlan_ap.ini -e /pds/wifi/nvs_map.bin
     class post-zygote_services
     disabled
     oneshot
 
-service ap_fmloader_rfmd /system2/bin/logwrapper /system2/bin/wlan_loader -f /system2/etc/wifi/fw_tiwlan_ap_rfmd.bin -i /system2/etc/wifi/tiwlan_ap_rfmd.ini -e /pds/wifi/nvs_map.bin
+service ap_fmloader_rfmd /system/bin/logwrapper /system/bin/wlan_loader -f /system/etc/wifi/fw_tiwlan_ap_rfmd.bin -i /system/etc/wifi/tiwlan_ap_rfmd.ini -e /pds/wifi/nvs_map.bin
     class post-zygote_services
     disabled
     oneshot
 
-service hostapd /system2/bin/logwrapper /system2/bin/Hostapd /data/misc/wifi/hostapd.conf
+service hostapd /system/bin/logwrapper /system/bin/Hostapd /data/misc/wifi/hostapd.conf
     class post-zygote_services
     socket hostapd_tiwlan0 dgram 660 wifi wifi
     disabled
     oneshot
 
-service dnsmasq /system2/bin/logwrapper /system2/bin/dnsmasq -C/data/misc/wifi/dns.conf -k
+service dnsmasq /system/bin/logwrapper /system/bin/dnsmasq -C/data/misc/wifi/dns.conf -k
     class post-zygote_services
     group wifi
     disabled
     oneshot
 
-service mynet_start /system2/bin/logwrapper /system2/bin/sh /data/misc/wifi/forward_start.sh
+service mynet_start /system/bin/logwrapper /system/bin/sh /data/misc/wifi/forward_start.sh
     class post-zygote_services
     disabled
     oneshot
 
-service mynet_stop /system2/bin/logwrapper /system2/bin/sh /data/misc/wifi/forward_stop.sh
+service mynet_stop /system/bin/logwrapper /system/bin/sh /data/misc/wifi/forward_stop.sh
     class post-zygote_services
     disabled
     oneshot
@@ -566,7 +566,7 @@ on boot
     chmod 666 /dev/nvodmcam
 
 # mount PDS partition
-    exec /system2/bin/remountpds -d /dev/block/mmcblk0p3 -m rw
+    exec /system/bin/remountpds -d /dev/block/mmcblk0p3 -m rw
 
 # bluetooth permissions
     chmod 0664 /pds/bt/bt_bdaddr
@@ -630,7 +630,7 @@ on boot
 # for feature 33302 device encryption
     mkdir /data/emt
     chmod 0700 /data/emt
-    exec /system2/bin/enc_mgt_tool
+    exec /system/bin/enc_mgt_tool
 
     #create folder for bp panic logs
     mkdir /data/panicreports
@@ -689,17 +689,17 @@ on boot
     chown system system /data/anr
 
     # Required for copying 12M/Batch files to Olympus
-    mkdir /system2/local 0771 mot_tcmd shell
-    mkdir /system2/local/12m 0771 mot_tcmd shell
-    mkdir /system2/local/12m/batch 0771 mot_tcmd shell
+    mkdir /system/local 0771 mot_tcmd shell
+    mkdir /system/local/12m 0771 mot_tcmd shell
+    mkdir /system/local/12m/batch 0771 mot_tcmd shell
 
-    chown mot_tcmd shell /system2/local
-    chown mot_tcmd shell /system2/local/12m
-    chown mot_tcmd shell /system2/local/12m/batch
+    chown mot_tcmd shell /system/local
+    chown mot_tcmd shell /system/local/12m
+    chown mot_tcmd shell /system/local/12m/batch
 
     # Required for Blur Bypass menu required for factory/user testing.
-    mkdir /system2/etc/motorola/com.motorola.blur.setup 0771 mot_tcmd shell
-    chown mot_tcmd shell /system2/etc/motorola/com.motorola.blur.setup
+    mkdir /system/etc/motorola/com.motorola.blur.setup 0771 mot_tcmd shell
+    chown mot_tcmd shell /system/etc/motorola/com.motorola.blur.setup
 
     # vibrator permissions
     chmod 0664 /sys/class/timed_output/vibrator/enable
@@ -736,18 +736,18 @@ on boot
     chown compass compass /sys/bus/i2c/drivers/qtouch-obp-ts/0-004a/irqStatus
 
 # Load Authentec VPN kernel module
-    insmod /system2/lib/vpnclient.ko
+    insmod /system/lib/vpnclient.ko
 
 # Start services
-    exec /system2/bin/mot_boot_mode
+    exec /system/bin/mot_boot_mode
     write /data/2nd-init/inittest 1
-service tcmd /system2/bin/tcmd
+service tcmd /system/bin/tcmd
     class post-zygote_services
     group mot_tcmd radio input system log camera graphics sdcard_rw audio inet bluetooth wifi mot_pwric mot_accy compass cache mot_tpapi mount mot_tombstone mot_whisper net_bt_admin net_raw net_admin
     socket local_tcmd stream 0660 mot_tcmd mot_tcmd
     socket batch_socket stream 0600 mot_tcmd mot_tcmd
 
-service tcmdhelp /system2/bin/tcmdhelp
+service tcmdhelp /system/bin/tcmdhelp
     class post-zygote_services
     socket tcmdhelp stream 0600 mot_tcmd mot_tcmd
     oneshot
@@ -757,7 +757,7 @@ service tcmdhelp /system2/bin/tcmdhelp
 on property:tcmd.start_tcmdhelp=1
     start tcmdhelp
 
-service ftmipcd /system2/bin/ftmipcd
+service ftmipcd /system/bin/ftmipcd
     class post-zygote_services
     user radio
     group radio inet
@@ -803,19 +803,19 @@ on property:tcmd.ctrl_adb=0
     stop usbd
     start usbd
 
-service wlan_prod /system2/bin/insmod /system2/lib/dhd.ko "firmware_path=/system2/etc/firmware/wifi/sdio-ag-cdc-full11n-minioctl-roml-pno-wme-aoe-pktfilter-keepalive.bin nvram_path=/system2/etc/firmware/wifi/nvram.txt"
+service wlan_prod /system/bin/insmod /system/lib/dhd.ko "firmware_path=/system/etc/firmware/wifi/sdio-ag-cdc-full11n-minioctl-roml-pno-wme-aoe-pktfilter-keepalive.bin nvram_path=/system/etc/firmware/wifi/nvram.txt"
     class post-zygote_services
     group wifi mot_tcmd system
     oneshot
     disabled
 
-service wlan_mfg /system2/bin/insmod /system2/lib/dhd.ko "firmware_path=/system2/etc/firmware/wifi/sdio-ag-cdc-11n-mfgtest-roml-seqcmds.bin nvram_path=/system2/etc/firmware/wifi/nvram.txt"
+service wlan_mfg /system/bin/insmod /system/lib/dhd.ko "firmware_path=/system/etc/firmware/wifi/sdio-ag-cdc-11n-mfgtest-roml-seqcmds.bin nvram_path=/system/etc/firmware/wifi/nvram.txt"
     class post-zygote_services
     group wifi mot_tcmd system
     oneshot
     disabled
 
-service wlan_12m /system2/bin/insmod /system2/lib/dhd.ko "firmware_path=/data/local/12m/sdio-ag-cdc-11n-mfgtest-roml-seqcmds.bin nvram_path=/system2/etc/wifi/nvram.txt"
+service wlan_12m /system/bin/insmod /system/lib/dhd.ko "firmware_path=/data/local/12m/sdio-ag-cdc-11n-mfgtest-roml-seqcmds.bin nvram_path=/system/etc/wifi/nvram.txt"
     class post-zygote_services
     group wifi mot_tcmd system
     oneshot
@@ -835,7 +835,7 @@ on property:tcmd.load_wlan="12m"
 
 # turn off wifi for tcmd step two
 on property:tcmd.load_wlan="unload"
-    exec /system2/bin/rmmod dhd
+    exec /system/bin/rmmod dhd
 
 # hook to stop supplicant from tcmd engine
 on property:tcmd.ctl_supplicant="stop"
@@ -843,24 +843,24 @@ on property:tcmd.ctl_supplicant="stop"
 
 # turn on bluetooth for tcmd
 # on property:tcmd.bt_mod=1
-#    insmod /system2/lib/modules/wl127x-test.ko
+#    insmod /system/lib/modules/wl127x-test.ko
 
 
 #turn off bluetooth for tcmd
 # on property:tcmd.bt_mod=0
-#    exec /system2/bin/rmmod wl127x_test
+#    exec /system/bin/rmmod wl127x_test
 #===================================================================
 
 # Backup/Restore Feature
 on property:mot.backup_restore.status="Finished"
     start zygote
 
-service mot_backup /system2/bin/logwrapper /system2/xbin/run_backup /system2/etc/backup_targets.csv
+service mot_backup /system/bin/logwrapper /system/xbin/run_backup /system/etc/backup_targets.csv
     disabled
     user root
     oneshot
 
-service mot_restore /system2/bin/logwrapper /system2/xbin/run_restore /system2/etc/backup_targets.csv
+service mot_restore /system/bin/logwrapper /system/xbin/run_restore /system/etc/backup_targets.csv
     disabled
     user root
     oneshot
@@ -877,18 +877,18 @@ on property:mot.backup_restore.action="run_restore"
 
 on property:sys.chargeonly.mode=""
     class_start pre-zygote_services
-    exec /system2/bin/charge_only_mode
+    exec /system/bin/charge_only_mode
 
 # Moto safe power down
 on property:sys.reboot=1
     stop ssmgrd
-    exec /system2/bin/sleep 10
-    exec /system2/bin/reboot
+    exec /system/bin/sleep 10
+    exec /system/bin/reboot
 
 on property:sys.shutdown=1
     stop ssmgrd
-    exec /system2/bin/sleep 10
-    exec /system2/bin/reboot -p
+    exec /system/bin/sleep 10
+    exec /system/bin/reboot -p
     setprop Drmdll.asfdrm libnvdrm.so
 
 # NvLogger settings for NvMM
@@ -898,25 +898,25 @@ on property:sys.shutdown=1
 #Setting required to load DRm lib
    setprop persist.tegra.drmlib.asfdrm  libnvdrm.so
 
-service nvrm_daemon /system2/bin/logwrapper /system2/bin/nvrm_daemon
+service nvrm_daemon /system/bin/logwrapper /system/bin/nvrm_daemon
     class pre-zygote_services
     user root
     onrestart restart servicemanager
 
-service bt_start /system2/bin/bt_init /system2/etc/bt_init.config
+service bt_start /system/bin/bt_init /system/etc/bt_init.config
     user bluetooth
     group bluetooth net_bt_admin net_raw net_admin misc
     disabled
     oneshot
 
 
-service bt_stop /system2/bin/bt_init -stop
+service bt_stop /system/bin/bt_init -stop
     user bluetooth
     group bluetooth net_bt_admin misc
     disabled
     oneshot
 
-service wpa_supplicant /system2/bin/wpa_supplicant -D wext -i eth0 -c/data/misc/wifi/wpa_supplicant.conf
+service wpa_supplicant /system/bin/wpa_supplicant -D wext -i eth0 -c/data/misc/wifi/wpa_supplicant.conf
     class post-zygote_services
     socket wpa_eth0 dgram 660 wifi wifi
 #    user root
@@ -927,18 +927,18 @@ service wpa_supplicant /system2/bin/wpa_supplicant -D wext -i eth0 -c/data/misc/
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd_eth0
 
-service dhcpcd_eth0 /system2/bin/dhcpcd
+service dhcpcd_eth0 /system/bin/dhcpcd
     class post-zygote_services
     disabled
     oneshot
 
 # Ecompass daemon
-service akmd2 /system2/bin/akmd2
+service akmd2 /system/bin/akmd2
     class post-zygote_services
     user compass
     group compass misc input
 
-service secclkd /system2/bin/secclkd
+service secclkd /system/bin/secclkd
     class post-zygote_services
     socket secclk_socket stream 660 mot_secclkd mot_secclkd
     user system
@@ -947,47 +947,47 @@ service secclkd /system2/bin/secclkd
 
 on property:persist.service.adb.enable=1
 # MOT change to statically link android usb module
-#    insmod /system2/lib/hw/g_android.ko
+#    insmod /system/lib/hw/g_android.ko
     start adbd
 
 # Battery Daemon
-service battd /system2/bin/battd
+service battd /system/bin/battd
     class pre-zygote_services
     socket battdsock stream 0660 mot_accy mot_accy
     user root
     group mot_accy mot_pwric
     oneshot
 
-service usbd /system2/bin/usbd
+service usbd /system/bin/usbd
     class pre-zygote_services
     group mot_tcmd
 
-service touch /system2/bin/logwrapper /system2/bin/touchpad -a
+service touch /system/bin/logwrapper /system/bin/touchpad -a
     user mot_tcmd
     group mot_tcmd
     class pre-zygote_services
     oneshot
 
-service whisperd /system2/bin/whisperd /dev/ttyHS0
+service whisperd /system/bin/whisperd /dev/ttyHS0
     class post-zygote_services
     user mot_whisper
     group mot_whisper mot_pwric
     oneshot
 
 #start Authentec VPN service
-service vpnclientpm /system2/bin/vpnclientpm
+service vpnclientpm /system/bin/vpnclientpm
     class post-zygote_services
     oneshot
     user root
 
 # ppp daemon used by the ATCMD to support DUN function
-service pppd /system2/bin/pppd silent ipparam dun plugin /system2/lib/libpppd_plugin.so
+service pppd /system/bin/pppd silent ipparam dun plugin /system/lib/libpppd_plugin.so
     class post-zygote_services
     user root
     disabled
     oneshot
 
-service map /system2/bin/sdptool add --channel=20 MAP
+service map /system/bin/sdptool add --channel=20 MAP
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
@@ -1009,13 +1009,13 @@ service map /system2/bin/sdptool add --channel=20 MAP
 # ro.sys.atvc_allow_netmon_usb
 # ro.sys.atvc_allow_netmon_ih
 # ro.sys.atvc_allow_all_adb
-service atvc /system2/bin/dbvc_atvc_property_set
+service atvc /system/bin/dbvc_atvc_property_set
        class pre-zygote_services
        user system
        group system
        oneshot
 
-service dlnasrv /system2/bin/dlnasrv
+service dlnasrv /system/bin/dlnasrv
     class post-zygote_services
     user mot_dlna
     group system net_admin sdcard_rw new_raw inet mount misc
@@ -1024,8 +1024,8 @@ service dlnasrv /system2/bin/dlnasrv
 
 #Check available storage space to execute device encryption or decryprion
 on property:sys.mot.encrypt.test=1
-    exec /system2/bin/encryption_test
-    exec /system2/bin/setprop sys.mot.encrypt.test ""
+    exec /system/bin/encryption_test
+    exec /system/bin/setprop sys.mot.encrypt.test ""
 # For CDMA
 
 on device-added-/dev/ttyHS3
@@ -1039,9 +1039,9 @@ on device-added-/dev/ttyHS4
 
 on property:dev.bootcomplete=1
     start loadpreinstalls
-    exec /system2/bin/ril-ip-bringup-chum.sh
+    exec /system/bin/ril-ip-bringup-chum.sh
 
-service loadpreinstalls /system2/bin/logwrapper /system2/bin/load_pia.sh
+service loadpreinstalls /system/bin/logwrapper /system/bin/load_pia.sh
     disabled
     oneshot
 
@@ -1067,64 +1067,64 @@ on boot
 
 
 #FM radio
-service fmradio /system2/bin/fmradioserver
+service fmradio /system/bin/fmradioserver
     class pre-zygote_services
     user system
     group bluetooth net_bt_admin net_raw net_admin misc
     disabled
 #Enable DUN and PAN support
-service dund_dialup /system2/bin/dund --listen --channel=6 --nodetach --dialup
+service dund_dialup /system/bin/dund --listen --channel=6 --nodetach --dialup
     class post-zygote_services
     group net_bt net_bt_admin
     disabled
     oneshot
 
-service nap /system2/bin/sdptool add NAP
+service nap /system/bin/sdptool add NAP
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service del_nap /system2/bin/sdptool remove NAP
+service del_nap /system/bin/sdptool remove NAP
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service panu /system2/bin/sdptool add PANU
+service panu /system/bin/sdptool add PANU
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service del_panu /system2/bin/sdptool remove PANU
+service del_panu /system/bin/sdptool remove PANU
     class post-zygote_services
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
-service napics /system2/bin/sh /system2/bin/napics.sh
+service napics /system/bin/sh /system/bin/napics.sh
     class post-zygote_services
     user root
     disabled
     oneshot
 
-service btdhcpd /system2/bin/dnsmasq -C /system2/etc/btpan.conf
+service btdhcpd /system/bin/dnsmasq -C /system/etc/btpan.conf
     class post-zygote_services
     user root
     disabled
     oneshot
 
-service gadget-qbp-diag /system2/bin/tty2ttyd /dev/ttyUSB0 /dev/ttyGS3 0 1024
+service gadget-qbp-diag /system/bin/tty2ttyd /dev/ttyUSB0 /dev/ttyGS3 0 1024
     oneshot
     disabled
 
 # This service is not currently used, because the AP20 is using the USB port for internal data
-service gadget-qbp-modem /system2/bin/tty2ttyd /dev/ttyUSB4 /dev/ttyGS2 0 1024
+service gadget-qbp-modem /system/bin/tty2ttyd /dev/ttyUSB4 /dev/ttyGS2 0 1024
     oneshot
     disabled
 
@@ -1136,10 +1136,10 @@ on property:ro.bootmode=bp-tools
 
 # internal sdcard
 on boot
-    exec /system2/bin/sh /system2/bin/check_sdc.sh
+    exec /system/bin/sh /system/bin/check_sdc.sh
 
 # Modem panic daemon - IKSTABLEFOUR-7865
-service mdm_panicd /system2/bin/mdm_panicd
+service mdm_panicd /system/bin/mdm_panicd
     class post-zygote_services
     oneshot
 
