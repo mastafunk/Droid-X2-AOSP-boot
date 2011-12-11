@@ -1,6 +1,10 @@
-X2 AOSP Boot Test
+X2 AOSP Boot Project by Mastafunk & Dragonzkiller
+Thanks to Dragonzkiller for a starting point
+and continuned support.
+
 Should boot stock blue via 2nd-init
 Check /data/2nd-init for logs
-
+Check /data/logcat-pre.log for pre 2nd-init logs
+Check /data/logcat.log for post 2nd-init logs
 
 
