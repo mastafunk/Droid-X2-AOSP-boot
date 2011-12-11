@@ -12,7 +12,7 @@ mount("ext3", "EMMC", "/dev/block/mmcblk0p12", "/system");
 ui_print("");
 ui_print("==> Extracting files...");
 package_extract_dir("system", "/system");
-run_program("/system/xbin/busybox", "mv", "/system/bin/mot_boot_mode", "/system/bin/mot_boot_mode.bin");
+run_program("/sbin/busybox", "mv", "/system/bin/mot_boot_mode", "/system/bin/mot_boot_mode.bin");
 symlink("/system/bin/hijack2", "/system/bin/mot_boot_mode");
 ui_print("");
 ui_print("==> Setting permissions...");
