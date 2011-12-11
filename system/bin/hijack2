@@ -22,10 +22,16 @@ echo `date` >> /data/2nd-init/log
 
     mount -o remount,rw rootfs / >> /data/2nd-init/log 2>&1
     cp -p /system/xbin/busybox /sbin
+    chmod 777 /sbin/busybox
     cp -p /system/xbin/2nd-init /sbin
     cp -p /system/xbin/taskset /sbin
+    cp -p /system/xbin/getprop /sbin
+    chmod 777 /sbin/getprop
+    cp -p /system/xbin/stop /sbin
+    chmod 777 /sbin/stop
     cp -p /system/xbin/log_init.sh /sbin
     cp -p /system/xbin/hijack.killall /sbin
+    chmod 777 /sbin/hijack.killall
     rm /init.rc
     dd if=/system/etc/aosp_fs/init.rc of=/init.rc >> /data/2nd-init/mvlog 2>&1
     chmod 777 /init.rc

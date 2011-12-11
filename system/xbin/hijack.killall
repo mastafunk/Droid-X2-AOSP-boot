@@ -1,13 +1,14 @@
 #!/sbin/busybox sh
-PATH=/sbin;/system/bin
+PATH=/sbin
 
 ## BEGIN KILL ALL ##
-echo "We are Running" >> /data/2nd-init/ka.log
+/sbin/busybox echo "We are Running" >> /data/2nd-init/ka.log
+sync;sync
 /sbin/busybox sleep 1s
 
 # kill all services
-for i in $(/system/bin/getprop | /sbin/busybox grep init.svc | /sbin/busybox sed -r 's/^\[init\.svc\.(.+)\]:.*$/\1/'); do
-	stop ${i}
+for i in $(/sbin/getprop | /sbin/busybox grep init.svc | /sbin/busybox sed -r 's/^\[init\.svc\.(.+)\]:.*$/\1/'); do
+	/sbin/stop ${i}
 	/sbin/busybox sleep 1
 done
 
