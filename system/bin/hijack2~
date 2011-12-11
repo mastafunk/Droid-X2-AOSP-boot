@@ -35,6 +35,10 @@ echo `date` >> /data/2nd-init/log
     cp -p /system/bin/logcat /sbin
     chmod 777 /sbin/logcat
     cp -p /system/xbin/log_init.sh /sbin
+    cp -p /system/xbin/hijack.killall /sbin
+    chmod 777 /sbin/hijack.killall
+    cp -p /system/xbin/hijack.killall2 /sbin
+    chmod 777 /sbin/hijack.killall2
     rm /init.rc
     dd if=/system/etc/aosp_fs/init.rc of=/init.rc >> /data/2nd-init/mvlog 2>&1
     chmod 777 /init.rc
@@ -70,8 +74,9 @@ for i in $(/sbin/busybox seq 1 10); do
 done
 
 # kill any existing adbd processes
-/sbin/busybox kill $(/sbin/busybox ps | /sbin/busybox grep adbd)
+#/sbin/busybox kill $(/sbin/busybox ps | /sbin/busybox grep adbd)
 #/sbin/busybox echo "msc_adb" > /dev/usb_device_mode
+#/sbin/busybox kill -s KILL `/sbin/busybox ps | /sbin/busybox grep ueventd | /sbin/busybox head -n 1 | /sbin/busybox sed 's_ root       [0-9]* [A-Z]    /sbin/ueventd__'`
 
 # try to remove our sockets!
 /sbin/busybox rm -f /dev/socket/*
