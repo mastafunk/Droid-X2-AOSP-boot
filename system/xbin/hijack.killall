@@ -3,7 +3,7 @@ PATH=/sbin
 
 ## BEGIN KILL ALL ##
 /sbin/busybox echo "We are Running" >> /data/2nd-init/ka.log
-sync;sync
+/sbin/busybox sync;/sbin/busybox sync
 /sbin/busybox sleep 1s
 
 # kill all services
