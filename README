@@ -1,0 +1,6 @@
+X2 AOSP Boot Test
+Should boot stock blue via 2nd-init
+Check /data/2nd-init for logs
+
+
+

@@ -24,23 +24,21 @@ echo `date` >> /data/2nd-init/log
     cp -p /system/xbin/busybox /sbin
     cp -p /system/xbin/2nd-init /sbin
     cp -p /system/xbin/taskset /sbin
-    cp -p /system/xbin/log_init.sh /sbin
+    ln -s /system/xbin/log_init.sh /log_init.sh
     cp -p /system/xbin/hijack.killall /sbin
+    #cat /system/etc/rootfs/init.rc /init.rc
     rm /init.rc
-    dd if=/system/etc/aosp_fs/init.rc of=/init.rc >> /data/2nd-init/mvlog 2>&1
-    chmod 777 /init.rc
-    ls -l / >> /data/2nd-init/mvlog 2>&1
+    ln -s /system/etc/aosp_fs/init.rc /init.rc
     sync;sync
-    sleep 1
-    /sbin/hijack.killall >> /data/2nd-init/log 2>&1
-    sleep 1
+    #/sbin/hijack.killall >> /data/2nd-init/log 2>&1
+    sleep 3
     /sbin/taskset -p -c 0 1 >> /data/2nd-init/log 2>&1
     sync;sync
     /sbin/taskset -c 0 /sbin/2nd-init >> /data/2nd-init/log 2>&1
 
   else
 
-    echo "Hey!! Weve Made it around This is being called from the new init.rc" >> /data/2nd-init/log 2>&1
+    echo "Hey!! Weve Made it around This being is being called from the new init.rc" >> /data/2nd-init/log 2>&1
     taskset -p -c 0,1 1 >> /data/2nd-init/log 2>&1
 
   fi

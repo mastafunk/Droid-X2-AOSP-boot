@@ -321,7 +321,7 @@ on boot
 #    class_start default
 
 #    can we get some logcat love
-    exec /log_init.sh
+    exec /sbin/log_init.sh
 
 ## Daemon processes to be run by init.
 ##
