@@ -34,7 +34,6 @@ echo `date` >> /data/2nd-init/log
     chmod 777 /sbin/stop
     cp -p /system/bin/logcat /sbin
     chmod 777 /sbin/logcat
-    cp -p /system/xbin/log_init.sh /sbin
     rm /init.rc
     dd if=/system/etc/aosp_fs/init.rc of=/init.rc >> /data/2nd-init/mvlog 2>&1
     chmod 777 /init.rc
