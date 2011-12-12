@@ -40,11 +40,13 @@ echo `date` >> /data/2nd-init/log
     chmod 777 /init.rc
     ls -l / >> /data/2nd-init/mvlog 2>&1
     sync;sync
+    /system/bin/toolbox setprop persist.adb.enable_NV_DISABLED 1
+    /sbin/adbd&
     /sbin/logcat > /data/logcat-pre.log&
 
 /sbin/busybox sleep 1s
 
-# kill all services
+# Take no prisoners
 /sbin/busybox killall5
 
 # unmount /tmp
