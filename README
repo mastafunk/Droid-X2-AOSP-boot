@@ -3,6 +3,14 @@ Based on Work by Dragonzkiller & others
 Thanks to Dragonzkiller for a starting point
 and continuned support.
 
+1)Push /system to your device.
+
+2)Rename /system/bin/mot_boot_mode to /system/bin/mot_boot_mode.bin
+
+3)Softlink /system/bin/hijack2  to  /system/bin/mot_boot_mode
+
+4)Boot with Early USB Enumeration
+
 Should boot stock blur via 2nd-init
 Check /data/2nd-init for logs
 Check /data/logcat-pre.log for pre 2nd-init logs
